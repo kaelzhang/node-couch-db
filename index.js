@@ -28,9 +28,7 @@ couchdb.CouchDB = CouchDB;
 // retries: 3,
 // retryTimeout: 30 * 1000
 function CouchDB(options){
-    this.options = options;
-
-    this._parseURL(options);
+    this.init(options);
 }
 
 
@@ -50,6 +48,11 @@ function define_method(foreign_object){
 
 
 lang.mix(CouchDB.prototype, {
+
+    init: function (options) {
+        this.options = options;
+        this._parseURL(options);
+    },
 
     // http://user:pass@domain.com:1234/pathname?query=a&b=2#hash
     // -> {
