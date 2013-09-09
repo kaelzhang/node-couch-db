@@ -99,16 +99,30 @@ lang.mix(CouchDB.prototype, {
         }
 
         // {
-        //     username: 'abc',
-        //     password: '123'
+        //     auth: {
+        //         username: 'abc',
+        //         password: '123'
+        //     }
         // }
-        // -> 'abc:123'
+        // -> 
+        // {
+        //     auth: 'abc:123'
+        // }
+
+        // {
+        //     auth: {}
+        // }
+        // ->
+        // {
+        //     auth: null
+        // }
         if( Object(options.auth) === options.auth ){
             url_object.auth = [options.auth.username, options.auth.password].filter(Boolean);
             url_object.auth = url_object.auth.length ?
                 url_object.auth.join(':') : 
                 null
         
+        // { auth: null } -> do not change
         }else if(options.auth){
             url_object.auth = options.auth;
         }
@@ -117,13 +131,15 @@ lang.mix(CouchDB.prototype, {
     },
 
     // @returns {Object}
+    // @param {string} path pathname of the request
+    // @param {mixed=} auth if is not undefined, `auth` will be used
     resolve: function(path, auth) {
         // clone 
         var url_object = lang.mix({}, this.url);
         url_object.pathname = node_url.resolve(url_object.pathname, path);
 
-        if(!auth){
-            url_object.auth = null;
+        if (auth !== undefined) {
+            url_object.auth = auth;
         }
 
         // format url, there's a bug of `request` if the url_object not formatted
@@ -138,10 +154,10 @@ lang.mix(CouchDB.prototype, {
 
     // no fault tolerance and arguments overloading
     _request: function(path, options, callback) {
-        var safe_url = this.resolve(path);
+        var safe_url = this.resolve(path, options.auth);
 
         var req_options = {
-            url: this.resolve(path, true),
+            url: this.resolve(path, null),
             safe_url: safe_url,
 
             // default to `'GET'`
