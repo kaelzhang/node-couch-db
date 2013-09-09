@@ -42,7 +42,7 @@ function define_method(foreign_object){
         // force overriding
         options = lang.merge(options, foreign_object);
 
-        return this._request.call(this, path, options, callback);
+        return this._request.call(this, path, options, this._makeCallback(callback) );
     };
 }
 
@@ -52,6 +52,14 @@ lang.mix(CouchDB.prototype, {
     init: function (options) {
         this.options = options;
         this._parseURL(options);
+
+        if ( options.makeCallback ) {
+            this._makeCallback = options.makeCallback;
+        }
+    },
+
+    _makeCallback: function (callback) {
+        return callback;  
     },
 
     // http://user:pass@domain.com:1234/pathname?query=a&b=2#hash

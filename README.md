@@ -55,3 +55,9 @@ Server data
 ### db.del(path, options, callback)
 
 ### db.attachment(path, options, callback)
+
+## Programmatical Details
+
+### couchdb(options)
+
+##### options.makeCallback
