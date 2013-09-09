@@ -154,15 +154,15 @@ lang.mix(CouchDB.prototype, {
 
     // no fault tolerance and arguments overloading
     _request: function(path, options, callback) {
-        var safe_url = this.resolve(path, options.auth);
-
         var req_options = {
-            url: this.resolve(path, null),
-            safe_url: safe_url,
+            // user could override url auth by `options.auth`
+            url         : this.resolve(path, options.auth),
+            // safe_url will not contains authentication
+            safe_url    : this.resolve(path, null),
 
             // default to `'GET'`
-            method: 'GET',
-            headers: {}
+            method      : 'GET',
+            headers     : {}
         };
         
         lang.mix(options, req_options, false);
