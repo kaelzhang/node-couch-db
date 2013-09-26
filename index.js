@@ -146,6 +146,11 @@ lang.mix(CouchDB.prototype, {
         return url_object.format();
     },
 
+    // @returns {boolean} whether the curnrent instance has the auth information.
+    hasAuth: function () {
+        return !!this.url.auth;
+    },
+
     escape: function(id) {
         return ~ ['_design', '_changes', '_temp_view'].indexOf( id.split('/')[0] ) ?
             id :

@@ -47,6 +47,10 @@ Callback
 
 Server data
 
+### db.hasAuth()
+
+returns `Boolean` whether the current instance has the authentication information.
+
 
 ### db.get(path, options, callback)
 
@@ -61,3 +65,7 @@ Server data
 ### couchdb(options)
 
 ##### options.makeCallback
+
+type `function(callback)`
+
+Specifies your custom wrapper of each original `callback`.
