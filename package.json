@@ -1,6 +1,6 @@
 {
   "name": "couch-db",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Couch-db is a simple node.js client of couchdb",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/kaelzhang/couch-db.git"
+    "url": "git@github.com:kaelzhang/node-couch-db.git"
   },
   "keywords": [
     "couchdb",
@@ -19,7 +19,7 @@
   "author": "Kael",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kaelzhang/couch-db/issues"
+    "url": "https://github.com/kaelzhang/node-couch-db/issues"
   },
   "dependencies": {
     "request": "~2.26.0",
