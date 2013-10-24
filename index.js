@@ -199,7 +199,8 @@ lang.mix(CouchDB.prototype, {
 
             if(Object(body) === body){
                 json = body;
-            }else{
+
+            }else if (json) {
                 try{
                     json = JSON.parse(body);
                 }catch(e){
