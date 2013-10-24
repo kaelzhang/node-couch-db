@@ -191,16 +191,11 @@ lang.mix(CouchDB.prototype, {
                 return callback(err, res, body);
             }
 
-            var json;
-
             if (Buffer.isBuffer(body)) {
                 body = body.toString();
             }
 
-            if(Object(body) === body){
-                json = body;
-
-            }else if (json) {
+            if(body && Object(body) !== body){
                 try{
                     json = JSON.parse(body);
                 }catch(e){
@@ -208,7 +203,7 @@ lang.mix(CouchDB.prototype, {
                 }
             }
 
-            callback(err, res, json);
+            callback(err, res, body);
         });
     },
 
