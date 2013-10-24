@@ -197,7 +197,7 @@ lang.mix(CouchDB.prototype, {
 
             if(body && Object(body) !== body){
                 try{
-                    json = JSON.parse(body);
+                    body = JSON.parse(body);
                 }catch(e){
                     return callback(new Error('Error parsing json: ' + body), res, body);
                 }
