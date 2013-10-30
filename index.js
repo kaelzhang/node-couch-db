@@ -98,36 +98,43 @@ lang.mix(CouchDB.prototype, {
             url_object.port = options.port;
         }
 
-        // {
-        //     auth: {
-        //         username: 'abc',
-        //         password: '123'
-        //     }
-        // }
-        // -> 
-        // {
-        //     auth: 'abc:123'
-        // }
-
-        // {
-        //     auth: {}
-        // }
-        // ->
-        // {
-        //     auth: null
-        // }
-        if( Object(options.auth) === options.auth ){
-            url_object.auth = [options.auth.username, options.auth.password].filter(Boolean);
-            url_object.auth = url_object.auth.length ?
-                url_object.auth.join(':') : 
-                null
+        var auth = this._resolveAuth(options.auth);
         
         // { auth: null } -> do not change
-        }else if(options.auth){
-            url_object.auth = options.auth;
+        if(auth){
+            url_object.auth = auth;
         }
 
         this.url = url_object;
+    },
+
+    // {
+    //     auth: {
+    //         username: 'abc',
+    //         password: '123'
+    //     }
+    // }
+    // -> 
+    // {
+    //     auth: 'abc:123'
+    // }
+
+    // {
+    //     auth: {}
+    // }
+    // ->
+    // {
+    //     auth: null
+    // }
+    _resolveAuth: function (auth) {
+        if( Object(auth) === auth ){
+            auth = [auth.username, auth.password].filter(Boolean);
+            auth = auth.length ?
+                auth.join(':') : 
+                null
+        }
+
+        return auth;
     },
 
     // @returns {Object}
@@ -138,7 +145,7 @@ lang.mix(CouchDB.prototype, {
         var url_object = lang.mix({}, this.url);
         url_object.pathname = node_url.resolve(url_object.pathname, path);
 
-        if (auth !== undefined) {
+        if (auth !== undefined && (auth = this._resolveAuth(auth))) {
             url_object.auth = auth;
         }
 
@@ -159,21 +166,24 @@ lang.mix(CouchDB.prototype, {
 
     // no fault tolerance and arguments overloading
     _request: function(path, options, callback) {
-        var req_options = {
-            // user could override url auth by `options.auth`
-            url         : this.resolve(path, options.auth),
-            // safe_url will not contains authentication
-            safe_url    : this.resolve(path, null),
+        var default_options = {
 
             // default to `'GET'`
             method      : 'GET',
             headers     : {}
         };
         
-        lang.mix(options, req_options, false);
+        lang.mix(options, default_options, false);
+
+        // user could override url auth by `options.auth`
+        options.url = this.resolve(path, options.auth);
+
+        // safe_url will not contains authentication
+        options.safe_url = this.resolve(path, null);
 
         // force to json
         options.headers.accept = "application/json";
+        delete options.auth;
 
         var self = this;
 
