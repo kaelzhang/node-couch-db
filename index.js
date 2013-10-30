@@ -145,8 +145,8 @@ lang.mix(CouchDB.prototype, {
         var url_object = lang.mix({}, this.url);
         url_object.pathname = node_url.resolve(url_object.pathname, path);
 
-        if (auth !== undefined && (auth = this._resolveAuth(auth))) {
-            url_object.auth = auth;
+        if (auth !== undefined) {
+            url_object.auth = this._resolveAuth(auth);
         }
 
         // format url, there's a bug of `request` if the url_object not formatted
