@@ -42,7 +42,7 @@ function define_method(foreign_object){
         // force overriding
         options = lang.merge(options, foreign_object);
 
-        return this._request.call(this, path, options, this._makeCallback(callback) );
+        return this.request.call(this, path, options, this._makeCallback(callback) );
     };
 }
 
@@ -165,7 +165,7 @@ lang.mix(CouchDB.prototype, {
     },
 
     // no fault tolerance and arguments overloading
-    _request: function(path, options, callback) {
+    request: function(path, options, callback) {
         var default_options = {
 
             // default to `'GET'`
