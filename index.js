@@ -2,13 +2,13 @@
 
 module.exports = couchdb;
 
-var request = require('request');
+var modified    = require('modified');
 var querystring = require('querystring');
 
-var lang = require('./lib/lang');
-var node_url = require('url');
+var lang        = require('./lib/lang');
+var node_url    = require('url');
 var node_events = require('events');
-var node_util = require('util');
+var node_util   = require('util');
 
 function couchdb(options){
     return new CouchDB(options);
@@ -56,10 +56,12 @@ lang.mix(CouchDB.prototype, {
         if ( options.makeCallback ) {
             this._makeCallback = options.makeCallback;
         }
+
+        this._request = modified(options);
     },
 
     _makeCallback: function (callback) {
-        return callback;  
+        return callback;
     },
 
     // http://user:pass@domain.com:1234/pathname?query=a&b=2#hash
@@ -189,7 +191,7 @@ lang.mix(CouchDB.prototype, {
 
         this.emit('request', options);
         // return the `request` object so that we can pipe it
-        return request(options, function(err, res, body) {
+        this._request.request(options, function(err, res, body) {
             self.emit('response', {
                 err : err,
                 res : res,

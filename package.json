@@ -1,6 +1,6 @@
 {
   "name": "couch-db",
-  "version": "0.5.1",
+  "version": "0.6.1",
   "description": "Couch-db is a simple node.js client of couchdb",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "url": "https://github.com/kaelzhang/node-couch-db/issues"
   },
   "dependencies": {
-    "request": "~2.26.0",
+    "modified": "~1.0.2",
     "querystring": "~0.2.0"
   }
 }
