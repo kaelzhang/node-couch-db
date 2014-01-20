@@ -191,7 +191,7 @@ lang.mix(CouchDB.prototype, {
 
         this.emit('request', options);
         // return the `request` object so that we can pipe it
-        return this._request.request(options, function(err, res, body) {
+        return this._request(options, function(err, res, body) {
             self.emit('response', {
                 err : err,
                 res : res,
